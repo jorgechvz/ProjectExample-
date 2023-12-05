@@ -1,7 +1,18 @@
+import { fetchUsers } from '@/lib/data'
 import Image from 'next/image'
 
-export default function Home() {
+export default async function Home() {
+  const getUser = await fetchUsers()
   return (
-    <h1>Budget Buddy App</h1>
+    <div>
+      <h1>Home</h1>
+      <ul>
+        {getUser.map((user) => (
+          <li key={user.id}>
+            {user.name} 
+          </li>
+        ))}
+      </ul>
+    </div>
   )
 }
