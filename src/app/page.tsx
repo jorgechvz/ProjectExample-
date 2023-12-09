@@ -1,18 +1,20 @@
-import { fetchUsers } from '@/lib/data'
-import Image from 'next/image'
+import Cta from "@/components/ui/landing/Cta";
+import Faq from "@/components/ui/landing/Faq";
+import Features from "@/components/ui/landing/Features";
+import Hero from "@/components/ui/landing/Hero";
+import Testimonials from "@/components/ui/landing/Testimonials";
+import { testimonialsData } from "@/lib/constants";
+
 
 export default async function Home() {
-  const getUser = await fetchUsers()
+
   return (
-    <div>
-      <h1>Home</h1>
-      <ul>
-        {getUser.map((user) => (
-          <li key={user.id}>
-            {user.name} 
-          </li>
-        ))}
-      </ul>
-    </div>
-  )
+    <>
+      <Hero />
+      <Features />
+      <Testimonials testimonials={testimonialsData} />
+      <Faq />
+      <Cta />
+    </>
+  );
 }
