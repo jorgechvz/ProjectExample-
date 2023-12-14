@@ -15,6 +15,22 @@ export type User = {
   role: Role;
 };
 
+export type UserPersonalInfo = {
+  id: string;
+  name: string;
+};
+
+export type UserEmailInfo = {
+  id: string;
+  email: string;
+};
+
+export type UserPasswordInfo = {
+  id: string;
+  password: string;
+  newPassword: string;
+};
+
 /* ---------------- Types for Budget ------------------ */
 
 export type Budget = {

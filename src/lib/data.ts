@@ -29,6 +29,20 @@ export async function fetchUserByEmail(email: string) {
   }
 }
 
+
+export async function fecthInfoUserbyId(id: string) {
+  noStore();
+  try {
+    const user = await db.user.findUnique({
+      where: { id }
+    });
+    return user;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch users.");
+  }
+}
+
 /* ------- Fetch for Categories ----- */
 
 export async function fetchAllCategories() {

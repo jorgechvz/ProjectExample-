@@ -19,7 +19,7 @@ export default function ProfileMenu({ imageUrl }: { imageUrl: string }) {
           <span className="sr-only">Open user menu</span>
           <Image
             className="h-8 w-8 rounded-full"
-            src={imageUrl || "/no-profile-image.jpg"}
+            src={imageUrl || "/no-profile-image.png"}
             alt="Profile image of the user"
             width={32}
             height={32}

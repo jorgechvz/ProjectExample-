@@ -160,6 +160,153 @@ export async function authenticateWithGoogle() {
   }
 }
 
+/* Update Personal Info */
+
+/* Update User Schema */
+const FormAccountSchema = z.object({
+  id: z.string(),
+  name: z.string({ required_error: "Name is required" }),
+  email: z
+    .string({ required_error: "Email is required" })
+    .email({ message: "Invalid email" }),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters" }),
+  newPassword: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters" }),
+});
+
+const UpdateNameUserSchema = FormAccountSchema.omit({
+  id: true,
+  email: true,
+  password: true,
+  newPassword: true,
+});
+
+const UpdatePasswordUserSchema = FormAccountSchema.omit({
+  id: true,
+  name: true,
+  email: true,
+});
+
+const UpdateEmailUserSchema = FormAccountSchema.omit({
+  id: true,
+  name: true,
+  password: true,
+  newPassword: true,
+});
+
+export async function UpdateUserPersonalInformation(
+  id: string,
+  formData: FormData
+) {
+  const { name } = UpdateNameUserSchema.parse({
+    name: formData.get("name"),
+  });
+
+  try {
+    await db.user.update({
+      where: {
+        id: id,
+      },
+      data: {
+        name: name,
+      },
+    });
+  } catch (error) {
+    return {
+      message: "Database Error: Failed to Update User.",
+    };
+  }
+
+  revalidatePath("/dashboard/profile");
+  redirect("/dashboard/profile");
+}
+
+export async function UpdateUserPassword(id: string, formData: FormData) {
+  const { password } = UpdatePasswordUserSchema.parse({
+    password: formData.get("password"),
+    newPassword: formData.get("newPassword"),
+  });
+
+  const user = await db.user.findUnique({
+    where: {
+      id: id,
+    },
+  });
+
+  if (!user) {
+    return {
+      message: "User not found.",
+    };
+  }
+
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+
+  if (!isPasswordValid) {
+    return {
+      message: "Current password is incorrect.",
+    };
+  }
+
+  const passwordHash = await bcrypt.hash(password, 10);
+
+  try {
+    await db.user.update({
+      where: {
+        id: id,
+      },
+      data: {
+        password: passwordHash,
+      },
+    });
+  } catch (error) {
+    return {
+      message: "Database Error: Failed to Update User.",
+    };
+  }
+  return{
+    message: "Password Updated"
+  }
+}
+
+export async function UpdateUserEmail(id: string, formData: FormData) {
+  const { email } = UpdateEmailUserSchema.parse({
+    email: formData.get("email"),
+  });
+
+  const validEmail = await db.user.findUnique({
+    where: {
+      email: email,
+    },
+  });
+
+  if (validEmail) {
+    return {
+      message: "Email already in use.",
+    };
+  }
+
+  try {
+    await db.user.update({
+      where: {
+        id: id,
+      },
+      data: {
+        email: email,
+      },
+    });
+  } catch (error) {
+    return {
+      message: "Database Error: Failed to Update User.",
+    };
+  }
+
+  revalidatePath("/dashboard/profile");
+  redirect("/dashboard/profile");
+}
+
 /* Incomes */
 
 /* Income Schema */

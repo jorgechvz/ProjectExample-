@@ -22,7 +22,7 @@
           <div className="w-full mt-10 shadow-xl shadow-blue-charcoal-950 p-4 rounded-md">
             <Savings />
           </div>
-          <div className="col-start-2 col-end-3 row-start-1 row-end-3 w-full mt-10 rounded-lg shadow-xl shadow-blue-charcoal-950 p-4">
+          <div className="col-start-2 mb-10 col-end-3 row-start-1 row-end-3 w-full mt-10 rounded-lg shadow-xl shadow-blue-charcoal-950 p-4">
             <Budget />
           </div>
           <div className="row-start-2 row-end-3 col-start-1 col-end-2 w-full shadow-xl shadow-blue-charcoal-950 p-4 rounded-md">
