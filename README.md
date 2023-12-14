@@ -1,8 +1,53 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# BudgetBuddy App - By Jorge A Chavez
 
-## Getting Started
+BudgetBuddy is a simple budget management app aimed at helping users track their income, expenses, budgets and savings in an easy-to-use way.
 
-First, run the development server:
+## Main Goal
+
+BudgetBuddy's goal is to provide college students and individuals looking for a simple tool to manage their personal finances with an intuitive and easy way to track their budget and savings.
+
+## Features
+
+- Easy-to-use interface to add and categorize income and expenses.
+- Budget tracking with visual representations of expense categories.
+- Establishment of savings goals with progress indicators.
+- Basic financial reports and insights.
+- Intuitive and responsive interface for entering financial data.
+- Basic budget algorithms for expense categorization.
+- Guarantee the privacy and security of financial data.
+
+## Vercel Link for Demo
+
+[https://budget-buddy-two.vercel.app/](https://budget-buddy-two.vercel.app/)
+
+## How to start
+
+Open your terminal.
+
+Navigate to the directory where you want to clone the repository. For example: 
+
+```bash
+cd projects
+```
+
+Clone the repository by running the git clone command followed by the URL of the repository. 
+
+```bash
+git clone https://github.com/jorgechvz/budget-buddy.git
+```
+
+Navigate into the cloned repository:
+
+```bash
+cd projects
+```
+
+Install the dependencies using npm:
+```bash
+npm install
+```
+
+Now, you can start the development server with:
 
 ```bash
 npm run dev
@@ -12,25 +57,4 @@ yarn dev
 pnpm dev
 # or
 bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+````

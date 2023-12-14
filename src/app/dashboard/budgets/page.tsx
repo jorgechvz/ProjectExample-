@@ -3,7 +3,10 @@ import BudgetsList from "@/components/ui/budget/BudgetList";
 import { CreateBudgetButton } from "@/components/ui/commons/Actions";
 import Search from "@/components/ui/commons/Search";
 import { fetchExpensesPages } from "@/lib/data";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Budgets - Budget Buddy",
+};
 export default async function BudgetsPage({
   searchParams,
 }: {

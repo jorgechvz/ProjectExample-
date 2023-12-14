@@ -1,7 +1,10 @@
 import { auth } from "@/auth";
 import BudgetForm from "@/components/ui/budget/BudgetForm";
 import { fetchAllCategories } from "@/lib/data";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Create Budget - Budget Buddy",
+};
 export default async function CreateBudgetPage() {
   const session = await auth();
   const userId: string = session?.user?.id as string;

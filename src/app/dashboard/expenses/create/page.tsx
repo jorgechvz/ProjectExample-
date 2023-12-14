@@ -7,7 +7,7 @@ import {
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Create Income - BudgetBuddy",
+  title: "Create Expenses - BudgetBuddy",
 };
 
 export default async function ExpenseCreatePage() {

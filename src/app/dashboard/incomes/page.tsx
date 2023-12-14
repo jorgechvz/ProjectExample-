@@ -12,6 +12,10 @@ import { formatCurrency } from "@/lib/utils";
 import { MdCalendarMonth } from "react-icons/md";
 import { FaPiggyBank } from "react-icons/fa6";
 import { GrMoney } from "react-icons/gr";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Incomes - Budget Buddy",
+};
 
 export default async function IncomesPage({
   searchParams,

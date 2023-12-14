@@ -9,7 +9,10 @@ import {
 } from "@/lib/data";
 import { formatCurrency } from "@/lib/utils";
 import { GrMoney } from "react-icons/gr";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Saving - Budget Buddy",
+};
 export default async function SavingsPage({
   searchParams,
 }: {

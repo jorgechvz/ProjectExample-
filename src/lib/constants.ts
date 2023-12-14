@@ -28,9 +28,9 @@ export const navigation = [
 
 export const profileNavigation = [
   {
-    name: "Your Profile",
-    key: "profile",
-    href: "/profile",
+    name: "Your Dashboard",
+    key: "dashbaord",
+    href: "/dashboard",
   },
 ];
 
