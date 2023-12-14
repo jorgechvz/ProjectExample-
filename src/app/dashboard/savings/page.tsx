@@ -32,7 +32,7 @@ export default async function SavingsPage({
   return (
     <div className="max-w-3xl mx-auto mt-10">
       <h1 className="text-blue-charcoal-950 text-3xl my-5 font-bold">
-        Your Incomes
+        Your Savings
       </h1>
       <div className="lg:flex gap-4">
         <div className="flex lg:mb-0 mb-5 p-5 justify-around items-center flex-1 gap-x-5 rounded-xl shadow-2xl shadow-blue-charcoal-950">
