@@ -69,7 +69,7 @@ export default async function Budget() {
         </div>
         <Divider className="h-1 mt-2 bg-blue-charcoal-950 rounded-md" />
         <div className="mt-5 flex flex-col justify-center items-center">
-          <p className="text-lg">You don't have any budgets yet.</p>
+          <p className="text-lg">You dont have any budgets yet.</p>
           <p className="text-6xl">
             <TbReportMoney />
           </p>

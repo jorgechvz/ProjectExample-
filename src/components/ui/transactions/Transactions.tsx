@@ -49,7 +49,7 @@ export default async function Transactions() {
           <Divider className="h-1 mt-2 bg-blue-charcoal-950 mb-3" />
         </div>
         <div className="flex flex-col justify-center items-center">
-          <p className="text-lg">You don't have any transactions yet.</p>
+          <p className="text-lg">You dont have any transactions yet.</p>
           <p className="text-6xl">
             <FaMoneyBillTransfer />
           </p>

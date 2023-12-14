@@ -55,7 +55,7 @@ export default async function BudgetsList({
             </thead>
             <tbody className="bg-silverSand-50 text-silverSand-950 ">
               {budgets?.map((item) => (
-                <tr className="w-full py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg">
+                <tr key={item.id} className="w-full py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg">
                   <td className="whitespace-nowrap px-3 py-3">{item.name}</td>
                   <td className="whitespace-nowrap px-3 py-3">
                     {formatCurrency(item.amount)}

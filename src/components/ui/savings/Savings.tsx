@@ -53,7 +53,7 @@ export default async function Savings() {
         <h2 className="md:text-2xl text-lg font-bold">Last Saving</h2>
         <Divider className="h-1 mt-2 bg-blue-charcoal-950 mb-3" />
         <div className="flex flex-col justify-center items-center">
-          <p className="text-lg">You don't have any savings yet.</p>
+          <p className="text-lg">You dont have any savings yet.</p>
           <p className="text-6xl">
             <MdOutlineSavings />
           </p>
