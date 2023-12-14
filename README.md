@@ -20,6 +20,11 @@ BudgetBuddy's goal is to provide college students and individuals looking for a 
 
 [https://budget-buddy-two.vercel.app/](https://budget-buddy-two.vercel.app/)
 
+You can use this credentials for test 
+Email: jorgechvzpon@gmail.com
+
+Password: 123456jorge
+
 ## How to start
 
 Open your terminal.
