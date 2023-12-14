@@ -159,3 +159,379 @@ export async function authenticateWithGoogle() {
     throw error;
   }
 }
+
+/* Incomes */
+
+/* Income Schema */
+
+const incomeSchema = z.object({
+  id: z.string(),
+  name: z.string({
+    required_error: "Please enter a name",
+  }),
+  amount: z.string({
+    required_error: "Please enter an amount",
+  }),
+  date: z.string({
+    required_error: "Please enter a date",
+  }),
+  userId: z.string(),
+  savingId: z.string().optional().nullable(),
+});
+
+const validateIncomeSchema = incomeSchema.omit({ id: true });
+
+export type IncomeState =
+  | {
+      errors?: {
+        name?: string[];
+        amount?: string[];
+        date?: string[];
+        userId?: string[];
+      };
+      message?: string | null;
+    }
+  | undefined;
+
+/* Create Income */
+
+export async function CreateIncome(prevState: IncomeState, formData: FormData) {
+  // Validate form data
+  const validatedFields = validateIncomeSchema.safeParse({
+    name: formData.get("name"),
+    amount: formData.get("amount"),
+    date: formData.get("date"),
+    userId: formData.get("userId"),
+    savingId: formData.get("savingId"),
+  });
+
+  // If validation fails, return errors
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Missing Fields. Please fill out all fields.",
+    };
+  }
+
+  // If validation succeeds, create income
+  const { name, amount, date, userId, savingId } = validatedFields.data;
+
+  const convertedAmount = parseFloat(amount);
+  const convertDate = new Date(date);
+  try {
+    await db.income.create({
+      data: {
+        source: name,
+        amount: convertedAmount,
+        date: convertDate,
+        userId: userId,
+        savingId: savingId,
+      },
+    });
+  } catch (error) {
+    return {
+      message: "Database Error: Failed to Create Income.",
+    };
+  }
+  revalidatePath("/dashboard/incomes");
+  redirect("/dashboard/incomes");
+}
+
+/* Expenses */
+
+/* Expense Schema */
+
+const expenseSchema = z.object({
+  id: z.string(),
+  amount: z.string({
+    required_error: "Please enter an amount",
+  }),
+  date: z.string({
+    required_error: "Please enter a date",
+  }),
+  userId: z.string(),
+  categoryId: z.string(),
+  budgetId: z.string().optional().nullable(),
+});
+
+const validateExpenseSchema = expenseSchema.omit({ id: true });
+
+export type ExpenseState =
+  | {
+      errors?: {
+        amount?: string[];
+        date?: string[];
+        userId?: string[];
+        categoryId?: string[];
+      };
+      message?: string | null;
+    }
+  | undefined;
+
+/* Create Expense */
+
+export async function CreateExpense(
+  prevState: ExpenseState,
+  formData: FormData
+) {
+  // Validate form data
+  const validatedFields = validateExpenseSchema.safeParse({
+    amount: formData.get("amount"),
+    date: formData.get("date"),
+    userId: formData.get("userId"),
+    categoryId: formData.get("categoryId"),
+  });
+
+  console.log(formData.get("budgetId"));
+  // If validation fails, return errors
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Missing Fields. Please fill out all fields.",
+    };
+  }
+
+  // If validation succeeds, create expense
+  const { amount, date, userId, categoryId } = validatedFields.data;
+
+  const budgetId = formData.get("budgetId") as string;
+
+  const convertedAmount = parseFloat(amount);
+  const convertDate = new Date(date);
+  try {
+    await db.expense.create({
+      data: {
+        amount: convertedAmount,
+        date: convertDate,
+        userId: userId,
+        categoryId: categoryId,
+        budgetId: budgetId,
+      },
+    });
+  } catch (error) {
+    return {
+      message: "Database Error: Failed to Create Expense.",
+    };
+  }
+  revalidatePath("/dashboard/expenses");
+  redirect("/dashboard/expenses");
+}
+
+/* Budgets */
+
+/* Budget Schema */
+
+const budgetSchema = z.object({
+  id: z.string(),
+  name: z.string({
+    required_error: "Please enter a name",
+  }),
+  amount: z.string({
+    required_error: "Please enter an amount",
+  }),
+  categoryId: z.string({
+    required_error: "Please select a category",
+  }),
+  userId: z.string(),
+});
+
+const validateBudgetSchema = budgetSchema.omit({ id: true });
+
+export type BudgetState =
+  | {
+      errors?: {
+        name?: string[];
+        amount?: string[];
+        categoryId?: string[];
+        userId?: string[];
+      };
+      message?: string | null;
+    }
+  | undefined;
+
+/* Create Budget */
+
+export default async function CreateBudget(
+  prevState: BudgetState,
+  formData: FormData
+) {
+  const validatedFields = validateBudgetSchema.safeParse({
+    name: formData.get("name"),
+    amount: formData.get("amount"),
+    date: formData.get("date"),
+    categoryId: formData.get("categoryId"),
+    userId: formData.get("userId"),
+  });
+
+  // If validation fails, return errors
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Missing Fields. Please fill out all fields.",
+    };
+  }
+
+  // If validation succeeds, create budget
+
+  const { name, amount, categoryId, userId } = validatedFields.data;
+
+  const convertedAmount = parseFloat(amount);
+
+  try {
+    await db.budget.create({
+      data: {
+        name: name,
+        amount: convertedAmount,
+        categoryId: categoryId,
+        userId: userId,
+      },
+    });
+  } catch (error) {
+    return {
+      message: "Database Error: Failed to Create Expense.",
+    };
+  }
+  revalidatePath("/dashboard/budgets");
+  redirect("/dashboard/budgets");
+}
+
+/* Edit Budget */
+
+const editBudgetSchema = z.object({
+  id: z.string(),
+  name: z.string({
+    required_error: "Please enter a name",
+  }),
+  amount: z.string({
+    required_error: "Please enter an amount",
+  }),
+  categoryId: z.string({
+    required_error: "Please select a category",
+  }),
+  userId: z.string(),
+});
+
+/* Edit Budget */
+
+export async function EditBudget(id: string, formData: FormData) {
+  const { name, amount, categoryId, userId } = editBudgetSchema.parse({
+    name: formData.get("name"),
+    amount: formData.get("amount"),
+    categoryId: formData.get("categoryId"),
+    userId: formData.get("userId"),
+  });
+
+  const convertedAmount = parseFloat(amount);
+
+  try {
+    await db.budget.update({
+      where: {
+        id: id,
+      },
+      data: {
+        name: name,
+        amount: convertedAmount,
+        categoryId: categoryId,
+        userId: userId,
+      },
+    });
+  } catch (error) {
+    return {
+      message: "Database Error: Failed to Uodate Budget.",
+    };
+  }
+  revalidatePath("/dashboard/budgets");
+  redirect("/dashboard/budgets");
+}
+
+/* Savings */
+
+/* Saving Schema */
+
+const savingSchema = z.object({
+  id: z.string(),
+  name: z.string({
+    required_error: "Please enter a name",
+  }),
+  description: z.string().optional(),
+  goal: z.string({
+    required_error: "Please enter a goal",
+  }),
+  startDate: z.string({
+    required_error: "Please enter a start date",
+  }),
+  endDate: z.string({
+    required_error: "Please enter an end date",
+  }),
+  userId: z.string(),
+});
+
+const validateSavingSchema = savingSchema.omit({ id: true });
+
+export type SavingState =
+  | {
+      errors?: {
+        name?: string[];
+        description?: string[];
+        goal?: string[];
+        startDate?: string[];
+        endDate?: string[];
+        userId?: string[];
+      };
+      message?: string | null;
+    }
+  | undefined;
+
+/* Create Saving */
+
+export async function CreateSaving(
+  prevState: SavingState,
+  formData: FormData
+) {
+
+  console.log(formData)
+  const validatedFields = validateSavingSchema.safeParse({
+    name: formData.get("name"),
+    description: formData.get("description"),
+    goal: formData.get("goal"),
+    startDate: formData.get("startDate"),
+    endDate: formData.get("endDate"),
+    userId: formData.get("userId"),
+  });
+  console.log(validatedFields)
+  // If validation fails, return errors
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Missing Fields. Please fill out all fields.",
+    };
+  }
+
+  // If validation succeeds, create saving
+
+  const { name, description, goal, startDate, endDate, userId } =
+    validatedFields.data;
+
+  const convertedGoal = parseFloat(goal);
+  const convertStartDate = new Date(startDate);
+  const convertEndDate = new Date(endDate);
+
+  try {
+    await db.saving.create({
+      data: {
+        name: name,
+        description: description,
+        goal: convertedGoal,
+        startDate: convertStartDate,
+        endDate: convertEndDate,
+        userId: userId,
+      },
+    });
+  } catch (error) {
+    return {
+      message: "Database Error: Failed to Create Saving.",
+    };
+  }
+  revalidatePath("/dashboard/savings");
+  redirect("/dashboard/savings");
+}

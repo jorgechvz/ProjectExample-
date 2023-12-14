@@ -16,18 +16,19 @@ enum Role {
 }
 
 model User {
-  id       String    @id @default(auto()) @map("_id") @db.ObjectId
-  name     String?
-  email    String    @unique
-  password String
-  image    String?
-  role     Role      @default(user)
-  accounts Account[]
-  savings  Saving[]
-  incomes  Income[]
-  expenses Expense[]
-  budgets  Budget[]
-  cards    Card[]
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  name       String?
+  email      String     @unique
+  password   String
+  image      String?
+  role       Role       @default(user)
+  accounts   Account[]
+  savings    Saving[]
+  incomes    Income[]
+  expenses   Expense[]
+  budgets    Budget[]
+  cards      Card[]
+  categories Category[]
 }
 
 model Account {
@@ -52,36 +53,55 @@ model Account {
 }
 
 model Saving {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  amount Float
-  goal   Float
-  user   User   @relation(fields: [userId], references: [id])
-  userId String @map("user_id") @db.ObjectId
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  name        String
+  description String?
+  goal        Float
+  startDate   DateTime
+  endDate     DateTime
+  incomes     Income[]
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String   @map("user_id") @db.ObjectId
 }
 
 model Income {
-  id     String   @id @default(auto()) @map("_id") @db.ObjectId
-  amount Float
-  source String
-  date   DateTime
-  user   User     @relation(fields: [userId], references: [id])
-  userId String   @map("user_id") @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  date      DateTime
+  amount    Float
+  source    String
+  savingId  String?   @map("saving_id") @db.ObjectId
+  saving    Saving?   @relation(fields: [savingId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @map("user_id") @db.ObjectId
 }
 
 model Expense {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  amount   Float
-  category String
-  date     DateTime
-  user     User     @relation(fields: [userId], references: [id])
-  userId   String   @map("user_id") @db.ObjectId
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt  DateTime @default(now())
+  amount     Float
+  date       DateTime
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId String   @map("category_id") @db.ObjectId
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String   @map("user_id") @db.ObjectId
+  budget     Budget?  @relation(fields: [budgetId], references: [id])
+  budgetId   String?  @map("budget_id") @db.ObjectId
 }
 
 model Budget {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  amount Float
-  user   User   @relation(fields: [userId], references: [id])
-  userId String @map("user_id") @db.ObjectId
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  name       String
+  amount     Float
+  category   Category  @relation(fields: [categoryId], references: [id])
+  categoryId String    @map("category_id") @db.ObjectId
+  user       User      @relation(fields: [userId], references: [id])
+  userId     String    @map("user_id") @db.ObjectId
+  expenses   Expense[]
 }
 
 model Card {
@@ -90,4 +110,14 @@ model Card {
   expiry DateTime
   user   User     @relation(fields: [userId], references: [id])
   userId String   @map("user_id") @db.ObjectId
+}
+
+model Category {
+  id      String    @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  icon    String?
+  budget  Budget[]
+  expense Expense[]
+  user    User?     @relation(fields: [userId], references: [id])
+  userId  String?   @map("user_id") @db.ObjectId
 }

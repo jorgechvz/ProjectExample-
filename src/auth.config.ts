@@ -7,6 +7,24 @@ export const authConfig = {
     signIn: "/auth/login",
   },
   callbacks: {
+    async jwt({ token, user }) {
+      // Add property to token
+      if (user) {
+        const dbUser = await fetchUserByEmail(user.email as string);
+        token.id = dbUser?.id;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      // Add property to session object
+      if (token?.id) {
+        session.user = {
+          ...session.user,
+          id: token.id as string,
+        };
+      }
+      return session;
+    },
     async signIn({ user, account, profile }) {
       if (account?.provider === "google") {
         // Fetch the user from your database
@@ -35,8 +53,8 @@ export const authConfig = {
     async authorized({ auth, request: { nextUrl } }) {
       // Middleware that runs whenever someone tries to access a page
       const isLoggedIn = !!auth?.user;
-      const isOnDashboard = nextUrl.pathname.startsWith("/about");
-      const publicPages = ["/"];
+      const isOnDashboard = nextUrl.pathname.startsWith("/dashboard");
+      const publicPages = ["/", "/about"];
       if (publicPages.includes(nextUrl.pathname)) {
         return true; // Allow access to public pages
       } else if (isOnDashboard) {
